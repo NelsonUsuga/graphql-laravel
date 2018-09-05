@@ -113,8 +113,13 @@ if (config('graphql.graphiql.display', true))
         'middleware'    => config('graphql.graphiql.middleware', [])
     ], function ($router)
     {
-        $graphiqlController =  config('graphql.graphiql.controller') ?? \Rebing\GraphQL\GraphQLController::class . '@graphiql';
-        $schemaParameterPattern = '/\{\s*graphql\_schema\s*\?\s*\}/';
+		//php 7.*
+		//$graphiqlController =  config('graphql.graphiql.controller') ?? \Rebing\GraphQL\GraphQLController::class . '@graphiql';
+		
+		//php 5.*
+		$graphiqlController =  !empty(config('graphql.graphiql.controller')) ? config('graphql.graphiql.controller') : \Rebing\GraphQL\GraphQLController::class . '@graphiql';
+		
+		$schemaParameterPattern = '/\{\s*graphql\_schema\s*\?\s*\}/';
         foreach (config('graphql.schemas') as $name => $schema)
         {
             Route::match(
